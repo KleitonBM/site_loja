@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel ADM | Sophia's Moda Feminina</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Estilos do Sistema de Abas */
+        .admin-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        .tab-btn {
+            background-color: transparent;
+            border: 1px solid var(--border-color);
+            padding: 10px 22px;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            color: var(--text-muted);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .tab-btn.active, .tab-btn:hover {
+            background-color: var(--text-primary);
+            color: #fff;
+            border-color: var(--text-primary);
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Estilos do Modal Pop-up */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+        .modal-overlay.open {
+            display: flex;
+            animation: fadeInModal 0.3s ease;
+        }
+        @keyframes fadeInModal {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .modal-card {
+            background: var(--surface);
+            width: 100%;
+            max-width: 650px;
+            border-radius: var(--radius);
+            padding: 30px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+        .modal-close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: var(--text-muted);
+            transition: var(--transition);
+        }
+        .modal-close-btn:hover {
+            color: var(--text-primary);
+        }
+
+        .header-actions-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .admin-footer {
+            background-color: var(--surface);
+            border-top: 1px solid var(--border-color);
+            padding: 25px 0;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-top: 60px;
+        }
+
+        .btn-nav-custom {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-nav-custom:hover {
+            background-color: var(--text-primary);
+            color: #fff;
+            border-color: var(--text-primary);
+        }
+    </style>
+</head>
+<body>
+
+    <header class="site-header">
+        <div class="container nav-container">
+            <div class="brand-logo">
+                <h1>Painel ADM</h1>
+                <span>Gestão Inteligente da Loja</span>
+            </div>
+            <div class="nav-links" style="display: flex; gap: 10px; align-items: center;">
+                <a href="index.html" class="btn-nav-custom" target="_blank"><i class="fa-solid fa-store"></i> Ver Vitrine</a>
+                <button id="btn-logout" class="btn-nav-custom" style="border-color: #d9534f; color: #d9534f;"><i class="fa-solid fa-right-from-bracket"></i> Sair</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container" style="margin-top: 30px; min-height: 70vh;">
+        
+        <!-- Menu de Abas -->
+        <div class="admin-tabs">
+            <button class="tab-btn active" onclick="switchTab('produtos', event)"><i class="fa-solid fa-shirt"></i> Produtos & Vitrine</button>
+            <button class="tab-btn" onclick="switchTab('tendencias', event)"><i class="fa-solid fa-bolt"></i> Tendências da Estação</button>
+            <button class="tab-btn" onclick="switchTab('banner', event)"><i class="fa-solid fa-image"></i> Banner Principal (Hero)</button>
+            <button class="tab-btn" onclick="switchTab('dividas', event)"><i class="fa-solid fa-book-open"></i> Caderneta / Dívidas</button>
+            <button class="tab-btn" onclick="switchTab('clientes', event)"><i class="fa-solid fa-users"></i> Clientes</button>
+            <button class="tab-btn" onclick="switchTab('reservas', event)"><i class="fa-solid fa-clock-rotate-left"></i> Reservas Pendentes</button>
+        </div>
+
+        <!-- ABA DE RESERVAS -->
+        <div id="tab-reservas" class="tab-content">
+            <div class="admin-container" style="max-width: 100% !important; width: 100% !important; margin-top: 0;">
+                <div class="header-actions-row">
+                    <div>
+                        <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; margin: 0;">Solicitações de Reserva</h3>
+                        <p style="color: var(--text-muted); font-size: 0.9rem;">Aprove ou cancele reservas solicitadas pelos clientes via vitrine.</p>
+                    </div>
+                </div>
+                
+                <!-- SEÇÃO DE RESERVAS COM FILTROS -->
+                <div class="store-filter-bar" style="margin-bottom: 20px;">
+                    <div class="search-box">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" id="filter-res-query" placeholder="Buscar por produto ou WhatsApp..." oninput="loadAdminReservationsTable()">
+                    </div>
+                    <div style="display: flex; gap: 10px; align-items: center;">
+                        <label style="font-size: 0.85rem; font-weight: 600; color: var(--text-muted);">Status:</label>
+                        <select id="filter-res-status" onchange="loadAdminReservationsTable()" style="padding: 10px 14px; border: 1px solid var(--border-color); border-radius: 30px; background: var(--bg-color); font-size: 0.85rem; outline: none;">
+                            <option value="pendente" selected>Pendentes</option>
+                            <option value="aprovado">Aprovados</option>
+                            <option value="cancelado">Cancelados</option>
+                            <option value="todos">Todos</option>
+                        </select>
+                    </div>
+                </div>
+                <div style="overflow-x: auto; margin-top: 20px;">
+                    <table class="admin-products-table">
+                        <thead>
+                            <tr>
+                                <th>Data</th>
+                                <th>Produto</th>
+                                <th>Valor</th>
+                                <th>WhatsApp do Cliente</th>
+                                <th>Status</th>
+                                <th>Ações (WhatsApp)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-reservations-table-body">
+                            <!-- Carregado via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ABA 1: PRODUTOS -->
+        <div id="tab-produtos" class="tab-content active">
+            <div class="admin-container" style="margin-top: 0;">
+                <div class="header-actions-row">
+                    <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; margin: 0;">Produtos Cadastrados</h3>
+                    <button class="btn-primary" onclick="openProductModal(false)" style="width: auto; padding: 10px 22px; font-size: 0.9rem;"><i class="fa-solid fa-plus"></i> Novo Produto</button>
+                </div>
+                
+                <div style="overflow-x: auto;">
+                    <table class="admin-products-table">
+                        <thead>
+                            <tr>
+                                <th>Foto</th>
+                                <th>Nome</th>
+                                <th>Categoria</th>
+                                <th>Preço</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-table-body"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ABA 2: TENDÊNCIAS -->
+        <div id="tab-tendencias" class="tab-content">
+            <div class="admin-container" style="margin-top: 0;">
+                <h2 style="margin-bottom: 20px; font-family: 'Cormorant Garamond', serif;">Gerir Seção de Tendências</h2>
+                
+                <form id="trends-title-form" style="margin-bottom: 30px; padding-bottom: 25px; border-bottom: 1px solid var(--border-color);">
+                    <div class="input-group">
+                        <label>Título Principal da Seção de Tendências</label>
+                        <div style="display: flex; gap: 10px;">
+                            <input type="text" id="trends-main-title" placeholder="Ex: Coleção Outono 2026" required>
+                            <button type="submit" class="btn-primary" style="width: auto; white-space: nowrap;">Atualizar Título</button>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="header-actions-row">
+                    <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; margin: 0;">Cards Ativos (Até 5 Fotos)</h3>
+                    <button class="btn-primary" onclick="openTrendModal()" style="width: auto; padding: 10px 22px; font-size: 0.9rem;"><i class="fa-solid fa-plus"></i> Nova Tendência</button>
+                </div>
+
+                <div style="overflow-x: auto;">
+                    <table class="admin-products-table">
+                        <thead>
+                            <tr>
+                                <th>Foto</th>
+                                <th>Tag</th>
+                                <th>Título</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-trends-table-body"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ABA 3: BANNER PRINCIPAL (HERO) -->
+        <div id="tab-banner" class="tab-content">
+            <div class="admin-container" style="margin-top: 0;">
+                <h2 style="margin-bottom: 20px; font-family: 'Cormorant Garamond', serif;">Personalizar Banner Principal (Hero)</h2>
+                
+                <form id="hero-banner-form">
+                    <div class="form-grid">
+                        <div class="input-group">
+                            <label>Subtítulo</label>
+                            <input type="text" id="hero-subtitle-input" placeholder="Ex: Coleção Exclusiva Essence" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Título Principal</label>
+                            <input type="text" id="hero-title-input" placeholder="Ex: Elegância em sua essência" required>
+                        </div>
+                        <div class="input-group full">
+                            <label>Texto Descritivo</label>
+                            <textarea id="hero-desc-input" rows="2" placeholder="Ex: Descubra as tendências..."></textarea>
+                        </div>
+                        <div class="input-group full">
+                            <label>Foto de Fundo do Banner (Selecionar do PC)</label>
+                            <input type="file" id="hero-bg-file" accept="image/*">
+                            <small style="color: var(--text-muted); font-size: 0.75rem;">Deixe em branco para manter a foto atual.</small>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-primary" id="btn-submit-hero" style="margin-top: 10px;">Salvar Alterações do Banner</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- ABA 4: CADERNETA / DÍVIDAS DE CLIENTES -->
+        <div id="tab-dividas" class="tab-content">
+            <div class="admin-container" style="margin-top: 0;">
+                <div class="header-actions-row">
+                    <div>
+                        <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; margin: 0;">Controle de Dívidas (Fiado)</h3>
+                        <p style="color: var(--text-muted); font-size: 0.9rem;">Acompanhe o saldo devedor, vencimentos e histórico de compras.</p>
+                    </div>
+                    <button class="btn-primary" onclick="openDebtModal()" style="width: auto; padding: 10px 22px; font-size: 0.9rem;"><i class="fa-solid fa-plus"></i> Novo Lançamento</button>
+                </div>
+
+                <!-- FILTROS COMPLETOS DA CADERNETA -->
+                <div class="store-filter-bar" style="margin-bottom: 20px; display: flex; flex-wrap: wrap; gap: 15px; align-items: center;">
+                    <div class="search-box" style="flex: 1; min-width: 220px;">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" id="filter-debt-client" placeholder="Buscar por cliente..." oninput="loadAdminDebtsTable()">
+                    </div>
+                    <div class="search-box" style="flex: 1; min-width: 220px;">
+                        <i class="fa-solid fa-shirt"></i>
+                        <input type="text" id="filter-debt-product" placeholder="Buscar por produto..." oninput="loadAdminDebtsTable()">
+                    </div>
+                    <div style="display: flex; gap: 10px; align-items: center;">
+                        <label style="font-size: 0.85rem; font-weight: 600; color: var(--text-muted);">Status:</label>
+                        <select id="filter-debt-status" onchange="loadAdminDebtsTable()" style="padding: 10px 14px; border: 1px solid var(--border-color); border-radius: 30px; background: var(--bg-color); font-size: 0.85rem; outline: none;">
+                            <option value="pendente" selected>Pendentes</option>
+                            <option value="atrasado">Atrasados</option>
+                            <option value="pago">Pagos</option>
+                            <option value="todos">Todos</option>
+                        </select>
+                    </div>
+                    <div>
+                        <button type="button" onclick="resetDebtFilters()" style="background: none; border: 1px solid var(--border-color); padding: 10px 16px; border-radius: 30px; cursor: pointer; font-size: 0.85rem; color: var(--text-muted); transition: var(--transition);">Limpar Filtros</button>
+                    </div>
+                </div>
+                
+                <div style="overflow-x: auto;">
+                    <table class="admin-products-table">
+                        <thead>
+                            <tr>
+                                <th>Cliente</th>
+                                <th>Produto</th>
+                                <th>Compra</th>
+                                <th>Vencimento</th>
+                                <th>Valor</th>
+                                <th>Status</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-debts-table-body"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ABA 5: CLIENTES -->
+        <div id="tab-clientes" class="tab-content">
+            <div class="admin-container" style="margin-top: 0;">
+                <div class="header-actions-row">
+                    <div>
+                        <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; margin: 0;">Gestão de Clientes</h3>
+                        <p style="color: var(--text-muted); font-size: 0.9rem;">Mantenha o cadastro e contatos de suas clientes atualizados.</p>
+                    </div>
+                    <button class="btn-primary" onclick="openClientModal()" style="width: auto; padding: 10px 22px; font-size: 0.9rem;"><i class="fa-solid fa-plus"></i> Nova Cliente</button>
+                </div>
+                
+                <div style="overflow-x: auto; margin-top: 20px;">
+                    <table class="admin-products-table">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Telefone / WhatsApp</th>
+                                <th>E-mail</th>
+                                <th>Endereço</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-clients-table-body"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- MODAL DE HISTÓRICO DO CLIENTE -->
+    <div id="history-modal" class="modal-overlay">
+        <div class="modal-card" style="max-width: 800px;">
+            <button class="modal-close-btn" onclick="closeHistoryModal()"><i class="fa-solid fa-xmark"></i></button>
+            <h2 id="history-modal-title" style="margin-bottom: 15px; font-family: 'Cormorant Garamond', serif;">Histórico da Cliente</h2>
+            
+            <div style="margin-bottom: 20px; background: var(--bg-color); padding: 15px; border-radius: var(--radius); border: 1px solid var(--border-color);">
+                <p id="history-summary-text" style="font-size: 0.95rem; font-weight: 500;">Calculando saldo...</p>
+            </div>
+
+            <div style="overflow-x: auto;">
+                <table class="admin-products-table">
+                    <thead>
+                        <tr>
+                            <th>Compra</th>
+                            <th>Vencimento</th>
+                            <th>Produto</th>
+                            <th>Valor</th>
+                            <th>Status</th>
+                            <th>Ação</th>
+                        </tr>
+                    </thead>
+                    <tbody id="client-history-table-body"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE CADASTRO DE DÍVIDAS / FIADO -->
+        <div id="debt-modal" class="modal-overlay">
+            <div class="modal-card" style="max-width: 650px;">
+                <button class="modal-close-btn" onclick="closeDebtModal()"><i class="fa-solid fa-xmark"></i></button>
+                <h2 style="margin-bottom: 20px; font-family: 'Cormorant Garamond', serif;">Novo Lançamento na Caderneta</h2>
+                
+                <form id="debt-form">
+                    <div class="form-grid">
+                        <div class="input-group">
+                            <label>Cliente</label>
+                            <select id="debt-client-select" required>
+                                <option value="">Carregando clientes...</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label>Data da Compra</label>
+                            <input type="date" id="debt-date" required onchange="handlePurchaseDateChange()">
+                        </div>
+                        <div class="input-group">
+                            <label>Vencimento (Previsão)</label>
+                            <input type="date" id="debt-due-date" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Parcelas</label>
+                            <input type="number" id="debt-installments" min="1" value="1">
+                        </div>
+                        <div class="input-group">
+                            <label>Status Inicial</label>
+                            <select id="debt-status">
+                                <option value="false">Pendente</option>
+                                <option value="true">Pago</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- SEÇÃO DE ITENS / MÚLTIPLOS PRODUTOS -->
+                    <div style="margin: 20px 0; border-top: 1px solid var(--border-color); padding-top: 15px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                            <label style="font-weight: 600; font-size: 0.9rem; color: var(--text-primary);">Produtos da Compra:</label>
+                            <button type="button" onclick="addDebtItemRow()" class="btn-primary" style="width: auto; padding: 6px 14px; font-size: 0.8rem;"><i class="fa-solid fa-plus"></i> Adicionar Outro Produto</button>
+                        </div>
+                        
+                        <div id="debt-items-container" style="display: flex; flex-Direction: column; gap: 10px;">
+                            <!-- Linha dinâmica injetada via JS -->
+                        </div>
+                    </div>
+
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; background: var(--bg-color); padding: 12px; border-radius: 6px; border: 1px solid var(--border-color);">
+                        <span style="font-weight: 600; font-size: 0.9rem;">Valor Total da Compra:</span>
+                        <span id="debt-total-calculated" style="font-size: 1.2rem; font-weight: 700; color: var(--accent);">R$ 0,00</span>
+                    </div>
+
+                    <button type="submit" class="btn-primary" id="btn-submit-debt">Salvar Lançamento na Caderneta</button>
+                </form>
+            </div>
+        </div>
+
+    <!-- MODAL DE CLIENTE -->
+    <div id="client-modal" class="modal-overlay">
+        <div class="modal-card">
+            <button class="modal-close-btn" onclick="closeClientModal()"><i class="fa-solid fa-xmark"></i></button>
+            <h2 id="client-form-title" style="margin-bottom: 20px; font-family: 'Cormorant Garamond', serif;">Cadastrar Nova Cliente</h2>
+            <form id="client-form">
+                <input type="hidden" id="client-id">
+                <div class="form-grid">
+                    <div class="input-group full">
+                        <label>Nome Completo</label>
+                        <input type="text" id="client-name" required placeholder="Ex: Ana Souza">
+                    </div>
+                    <div class="input-group">
+                        <label>Telefone / WhatsApp</label>
+                        <input type="text" id="client-phone" placeholder="(27) 99999-9999">
+                    </div>
+                    <div class="input-group">
+                        <label>E-mail (Opcional)</label>
+                        <input type="email" id="client-email" placeholder="cliente@email.com">
+                    </div>
+                    <div class="input-group full">
+                        <label>Endereço de Entrega</label>
+                        <input type="text" id="client-address" placeholder="Rua, Número, Bairro, Cidade">
+                    </div>
+                </div>
+                <button type="submit" class="btn-primary" id="btn-submit-client" style="margin-top: 15px;">Salvar Cliente</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL DE CADASTRO / EDIÇÃO DE PRODUTO -->
+<div id="product-modal" class="modal-overlay">
+    <div class="modal-card" style="max-width: 600px;">
+        <button class="modal-close-btn" onclick="closeProductModal()"><i class="fa-solid fa-xmark"></i></button>
+        <h2 id="form-title" style="margin-bottom: 20px; font-family: 'Cormorant Garamond', serif;">Cadastrar Novo Produto</h2>
+        
+        <form id="product-form">
+            <input type="hidden" id="prod-id">
+            <div class="form-grid">
+                <div class="input-group full">
+                    <label>Nome da Peça</label>
+                    <input type="text" id="prod-name" required placeholder="Ex: Vestido Midi Alfaiataria">
+                </div>
+                <div class="input-group">
+                    <label>Preço Atual (R$)</label>
+                    <input type="number" step="0.01" id="prod-price" required placeholder="150.00">
+                </div>
+                <div class="input-group">
+                    <label>Preço Antigo / Riscado (Opcional)</label>
+                    <input type="number" step="0.01" id="prod-old-price" placeholder="200.00">
+                </div>
+                <div class="input-group">
+                    <label>Categoria</label>
+                    <select id="prod-category" required>
+                        <option value="">Selecione...</option>
+                        <option value="Vestidos">Vestidos</option>
+                        <option value="Blusas">Blusas</option>
+                        <option value="Conjuntos">Conjuntos</option>
+                        <option value="Alfaiataria">Alfaiataria</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Tamanhos (separados por vírgula)</label>
+                    <input type="text" id="prod-sizes" required placeholder="P, M, G, GG">
+                </div>
+                <div class="input-group full">
+                    <label>Descrição Completa</label>
+                    <textarea id="prod-desc" rows="3" placeholder="Detalhes do tecido, caimento e recomendações..."></textarea>
+                </div>
+                <div class="input-group full">
+                    <label>Fotos do Produto (Selecione uma ou várias)</label>
+                    <input type="file" id="prod-file" accept="image/*" multiple>
+                    <small style="color: var(--text-muted); font-size: 0.75rem; display: block; margin-top: 4px;">Você pode selecionar várias fotos de uma vez para compor a galeria estilo e-commerce.</small>
+                </div>
+            </div>
+            <button type="submit" class="btn-primary" id="btn-submit" style="margin-top: 15px;">Salvar Produto no Banco de Dados</button>
+        </form>
+    </div>
+</div>
+
+    <!-- MODAL POP-UP DE CADASTRO DE TENDÊNCIA -->
+    <div id="trend-modal" class="modal-overlay">
+        <div class="modal-card">
+            <button class="modal-close-btn" onclick="closeTrendModal()"><i class="fa-solid fa-xmark"></i></button>
+            <h2 id="trend-form-title" style="margin-bottom: 20px; font-family: 'Cormorant Garamond', serif;">Cadastrar Card de Tendência</h2>
+            <form id="trend-form">
+                <input type="hidden" id="trend-id">
+                <div class="form-grid">
+                    <div class="input-group">
+                        <label>Etiqueta / Tag (Ex: Romântico, Essencial)</label>
+                        <input type="text" id="trend-tag" required placeholder="Ex: Estilo Outono">
+                    </div>
+                    <div class="input-group">
+                        <label>Título do Card / Categoria</label>
+                        <input type="text" id="trend-title" required placeholder="Ex: Alfaiataria & Tricô">
+                    </div>
+                    <div class="input-group full">
+                        <label>Foto do Card (Selecionar do PC)</label>
+                        <input type="file" id="trend-file" accept="image/*" required>
+                        <small style="color: var(--text-muted); font-size: 0.75rem;">Aparecerá na vitrine principal (máximo de 5 cards ativos).</small>
+                    </div>
+                </div>
+                <button type="submit" class="btn-primary" id="btn-submit-trend" style="margin-top: 15px;">Adicionar Tendência</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Rodapé -->
+    <footer class="admin-footer">
+        <div class="container">
+            <p>&copy; 2026 Sophia's Moda Feminina - Gestão Interna</p>
+        </div>
+    </footer>
+
+    <!-- Scripts de Controle de Abas e Modais -->
+    <script>
+        function switchTab(tabId, event) {
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById('tab-' + tabId).classList.add('active');
+            if (event && event.currentTarget) event.currentTarget.classList.add('active');
+        }
+
+        function openProductModal(isEdit = false) {
+            if (!isEdit) resetAdminForm();
+            document.getElementById('product-modal').classList.add('open');
+        }
+
+        function closeProductModal() {
+            document.getElementById('product-modal').classList.remove('open');
+        }
+
+        function openTrendModal() {
+            const trendForm = document.getElementById('trend-form');
+            if (trendForm) trendForm.reset();
+            document.getElementById('trend-modal').classList.add('open');
+        }
+
+        function closeTrendModal() {
+            document.getElementById('trend-modal').classList.remove('open');
+        }
+    </script>
+
+    <!-- Supabase CDN e Script Principal -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="script.js"></script>
+</body>
+</html>

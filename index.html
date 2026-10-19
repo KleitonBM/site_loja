@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sophia's | Moda Feminina</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Estilos CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Top Bar de Avisos -->
+    <div class="announcement-bar">
+        <span>✨ Frete Grátis nas compras acima de R$ 250 • Atendimento Exclusivo via WhatsApp</span>
+    </div>
+
+    <!-- Header Principal -->
+    <header class="site-header">
+        <div class="container nav-container">
+            <div class="brand-logo">
+                <h1>SOPHIA'S</h1>
+                <span>Moda Feminina</span>
+            </div>
+            <nav class="desktop-nav">
+                <a href="#vitrine">Lançamentos</a>
+                <a href="#tendencias">Tendências</a>
+                <a href="#sobre">A Marca</a>
+            </nav>
+            <div class="nav-links">
+                <a href="admin.html" class="admin-link-badge"><i class="fa-solid fa-lock"></i> ADM</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Banner Sofisticado -->
+    <section class="hero-banner">
+        <div class="hero-overlay"></div>
+        <div class="container hero-content">
+            <span class="hero-subtitle">Coleção Exclusiva Essence</span>
+            <h2>Elegância em sua essência</h2>
+            <p>Descubra as tendências que valorizam sua silhueta com caimento impecável e sofisticação incomparável.</p>
+            <a href="#vitrine" class="hero-cta-btn">Explorar Coleção</a>
+        </div>
+    </section>
+
+    <!-- Seção de Tendências em Destaque (Grid Visual) -->
+    <section class="trends-section container" id="tendencias">
+        <div class="section-title-wrapper">
+            <span class="sub-tag">Estilos do Momento</span>
+            <h3>Tendências da Estação</h3>
+        </div>
+        <div class="trends-grid">
+            <div class="trend-card">
+                <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=800&q=80" alt="Alfaiataria Chic">
+                <div class="trend-overlay">
+                    <span>Essencial</span>
+                    <h4>Alfaiataria Chic</h4>
+                </div>
+            </div>
+            <div class="trend-card">
+                <img src="https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?auto=format&fit=crop&w=800&q=80" alt="Vestidos Fluidos">
+                <div class="trend-overlay">
+                    <span>Romântico</span>
+                    <h4>Vestidos Fluidos</h4>
+                </div>
+            </div>
+            <div class="trend-card">
+                <img src="https://images.unsplash.com/photo-1551163943-3f6a855d117e?auto=format&fit=crop&w=800&q=80" alt="Casual Elegance">
+                <div class="trend-overlay">
+                    <span>Dia a Dia</span>
+                    <h4>Casual Elegance</h4>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- MODAL DE DETALHES COMPLETO DO PRODUTO (ESTILO AMERICANAS) -->
+    <div id="product-detail-modal" class="modal-overlay">
+        <div class="modal-card product-detail-card" style="max-width: 750px; width: 90%;">
+            <button class="modal-close-btn" onclick="closeProductDetailModal()"><i class="fa-solid fa-xmark"></i></button>
+            
+            <div class="product-detail-grid">
+                <!-- Galeria de Imagens -->
+                <div class="product-gallery">
+                    <div class="main-image-container">
+                        <img id="detail-main-img" src="" alt="Produto">
+                    </div>
+                    <div class="thumbs-container" id="detail-thumbs-grid">
+                        <!-- Miniaturas injetadas via JS -->
+                    </div>
+                </div>
+
+                <!-- Informações e Ações -->
+                <div class="product-info-col">
+                    <span id="detail-category" class="card-category"></span>
+                    <h2 id="detail-title" style="font-family: 'Cormorant Garamond', serif; margin: 5px 0 10px;"></h2>
+                    
+                    <div class="card-pricing" style="margin-bottom: 15px;">
+                        <span id="detail-price-current" class="price-current" style="font-size: 1.5rem;"></span>
+                        <span id="detail-price-old" class="price-old"></span>
+                    </div>
+
+                    <div style="margin-bottom: 15px;">
+                        <label style="font-weight: 600; display: block; margin-bottom: 5px; font-size: 0.85rem; color: var(--text-muted);">Tamanhos Disponíveis:</label>
+                        <div id="detail-sizes-row" class="sizes-row"></div>
+                    </div>
+
+                    <div style="margin-bottom: 20px;">
+                        <label style="font-weight: 600; display: block; margin-bottom: 5px; font-size: 0.85rem; color: var(--text-muted);">Descrição do Produto:</label>
+                        <p id="detail-description" style="font-size: 0.9rem; color: #555; line-height: 1.5; max-height: 120px; overflow-y: auto; padding-right: 5px;"></p>
+                    </div>
+
+                    <button id="btn-open-res-from-detail" type="button" class="btn-reservar-card" style="width: 100%; padding: 14px;">
+                        <i class="fa-solid fa-bookmark"></i> Reservar Peça
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE RESERVA PARA O CLIENTE -->
+    <div id="reservation-modal" class="modal-overlay">
+        <div class="modal-card" style="max-width: 450px;">
+            <button class="modal-close-btn" onclick="closeReservationModal()"><i class="fa-solid fa-xmark"></i></button>
+            <h2 style="margin-bottom: 10px; font-family: 'Cormorant Garamond', serif;">Reservar Peça</h2>
+            <p id="reservation-product-info" style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;"></p>
+            
+            <form id="reservation-form">
+                <input type="hidden" id="res-product-name">
+                <input type="hidden" id="res-product-price">
+                <div class="form-grid">
+                    <div class="input-group full">
+                        <label>Selecione o Tamanho Desejado</label>
+                        <select id="res-product-size" required style="width: 100%; padding: 10px; border-radius: 4px; border: 1px solid var(--border-color); background: var(--surface); color: var(--text-primary);">
+                            <!-- Preenchido dinamicamente -->
+                        </select>
+                    </div>
+                    <div class="input-group full">
+                        <label>Informe seu WhatsApp (com DDD)</label>
+                        <input type="text" id="res-client-whatsapp" required placeholder="Ex: 27999999999">
+                    </div>
+                </div>
+                <button type="submit" class="btn-primary" id="btn-submit-reservation" style="margin-top: 15px;">Solicitar Reserva</button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Container Principal de Produtos (Vitrine) -->
+    <main class="container main-shop-section" id="vitrine">
+        
+        <div class="section-title-wrapper" style="margin-top: 40px;">
+            <span class="sub-tag">Vitrine Online</span>
+            <h3>Nossos Lançamentos</h3>
+        </div>
+
+        <!-- Filtros e Barra de Pesquisa Estilo Boutique -->
+        <div class="store-filter-bar">
+            <div class="search-box">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="input-search" placeholder="Buscar vestidos, conjuntos, blusas...">
+            </div>
+            <div class="category-pills" id="category-filters">
+                <button class="pill-btn active" data-category="todos">Todos</button>
+                <button class="pill-btn" data-category="Vestidos">Vestidos</button>
+                <button class="pill-btn" data-category="Blusas">Blusas</button>
+                <button class="pill-btn" data-category="Conjuntos">Conjuntos</button>
+                <button class="pill-btn" data-category="Alfaiataria">Alfaiataria</button>
+            </div>
+        </div>
+
+        <!-- Vitrine Dinâmica (Alimentada pela API do Supabase) -->
+        <section class="products-grid" id="products-grid">
+            <!-- Os produtos são injetados via JavaScript com o botão de reserva integrado -->
+        </section>
+    </main>
+
+    <!-- Seção Sobre a Marca (Quem Somos) -->
+    <section class="about-brand-section">
+        <div class="container about-grid" id="sobre">
+            <div class="about-text">
+                <span class="sub-tag">Nossa História</span>
+                <h3>Moda que traduz a sua melhor versão</h3>
+                <p>A <strong>Sophia's Moda Feminina</strong> nasceu com o propósito de empoderar mulheres através de peças que unem elegância, conforto e sofisticação. Cada coleção é cuidadosamente selecionada para acompanhar você em todos os momentos, do casual ao sofisticado.</p>
+                <p>Nosso atendimento humanizado via WhatsApp garante que você tenha uma consultoria de estilo exclusiva na palma da sua mão.</p>
+            </div>
+            <div class="about-image">
+                <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=900&q=80" alt="Boutique Sophia's">
+            </div>
+        </div>
+    </section>
+
+    <!-- Seção de Benefícios (Garantias da Loja) -->
+    <section class="features-section">
+        <div class="container features-grid">
+            <div class="feature-item">
+                <i class="fa-solid fa-bag-shopping"></i>
+                <div>
+                    <h4>Peças Exclusivas</h4>
+                    <p>Curadoria rigorosa de tendências</p>
+                </div>
+            </div>
+            <div class="feature-item">
+                <i class="fa-brands fa-whatsapp"></i>
+                <div>
+                    <h4>Atendimento VIP</h4>
+                    <p>Suporte personalizado via WhatsApp</p>
+                </div>
+            </div>
+            <div class="feature-item">
+                <i class="fa-solid fa-box-open"></i>
+                <div>
+                    <h4>Envio Para Todo o Estado</h4>
+                    <p>Embalagem perfumada e segura</p>
+                </div>
+            </div>
+            <div class="feature-item">
+                <i class="fa-solid fa-shield-halved"></i>
+                <div>
+                    <h4>Compra Segura</h4>
+                    <p>Pagamento facilitado e confiável</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Botão Flutuante do WhatsApp -->
+    <a href="#" id="floating-whatsapp" class="whatsapp-float-btn" target="_blank" title="Fale conosco no WhatsApp">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+    <!-- Rodapé Completo -->
+    <footer class="site-footer">
+        <div class="container footer-content-grid">
+            <div class="footer-col">
+                <h3>SOPHIA'S</h3>
+                <p>Moda feminina autêntica inspirada no seu estilo e bem-estar.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Links Rápidos</h4>
+                <ul>
+                    <li><a href="#vitrine">Lançamentos</a></li>
+                    <li><a href="#tendencias">Tendências</a></li>
+                    <li><a href="#sobre">Sobre a Marca</a></li>
+                    <li><a href="admin.html">Painel Administrativo</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Atendimento</h4>
+                <p><i class="fa-brands fa-whatsapp"></i> WhatsApp Exclusivo para Pedidos</p>
+                <p><i class="fa-regular fa-clock"></i> Seg à Sex: 09h às 18h</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="container">
+                <p>&copy; 2026 Sophia's Moda Feminina. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Supabase SDK & Script Principal -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login ADM | Sophia's Moda Feminina</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body style="display: flex; flex-direction: column; min-height: 100vh; justify-content: space-between;">
+
+    <header class="site-header">
+        <div class="container nav-container">
+            <div class="brand-logo">
+                <h1>SOPHIA'S</h1>
+                <span>Área Restrita</span>
+            </div>
+            <div class="nav-links">
+                <a href="index.html" class="btn-nav-outline"><i class="fa-solid fa-store"></i> Ver Vitrine</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container" style="flex: 1; display: flex; align-items: center; justify-content: center; padding: 40px 20px;">
+        <div class="admin-container" style="width: 100%; max-width: 400px;">
+            <h2 style="text-align: center; margin-bottom: 24px; font-family: 'Cormorant Garamond', serif; font-size: 2rem;">Acesso Administrativo</h2>
+            
+            <div id="login-error" style="background-color: #f8d7da; color: #721c24; padding: 10px; border-radius: 6px; font-size: 0.85rem; margin-bottom: 15px; display: none;"></div>
+
+            <form id="login-form">
+                <div class="input-group full">
+                    <label>E-mail de Acesso</label>
+                    <input type="email" id="login-email" required placeholder="seu-email@exemplo.com">
+                </div>
+                <div class="input-group full">
+                    <label>Senha</label>
+                    <input type="password" id="login-password" required placeholder="••••••••">
+                </div>
+                <button type="submit" class="btn-primary" id="btn-login-submit" style="margin-top: 10px;">Entrar no Painel</button>
+            </form>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Sophia's Moda Feminina</p>
+    </footer>
+
+    <!-- Supabase CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="script.js"></script>
+</body>
+</html>
