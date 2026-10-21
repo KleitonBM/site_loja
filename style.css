@@ -835,6 +835,72 @@ h1, h2, h3, h4, .brand-logo h1 {
 .action-icon-btn.edit:hover { color: var(--accent); }
 .action-icon-btn.delete:hover { color: #d9534f; }
 
+
+/* Setas Laterais no Card da Vitrine */
+.card-img-wrapper {
+    position: relative;
+    overflow: hidden;
+}
+.card-nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.75);
+    color: #333;
+    border: none;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    opacity: 0;
+    transition: all 0.25s ease;
+    z-index: 5;
+    backdrop-filter: blur(4px);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+.card-img-wrapper:hover .card-nav-btn {
+    opacity: 0.9;
+}
+.card-nav-btn:hover {
+    background: #ffffff;
+    transform: translateY(-50%) scale(1.1);
+    opacity: 1 !important;
+}
+.card-nav-btn.prev { left: 8px; }
+.card-nav-btn.next { right: 8px; }
+
+/* Setas no Modal de Detalhes */
+.main-image-container {
+    position: relative;
+}
+.modal-nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.85);
+    color: #333;
+    border: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 5;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+.modal-nav-btn:hover {
+    background: #fff;
+    transform: translateY(-50%) scale(1.08);
+}
+.modal-nav-btn.prev { left: 10px; }
+.modal-nav-btn.next { right: 10px; }
+
 /* ==========================================
    12. RESPONSIVIDADE (MOBILE E TABLET)
    ========================================== */

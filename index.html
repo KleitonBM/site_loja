@@ -47,7 +47,7 @@
         </div>
     </section>
 
-    <!-- Seção de Tendências em Destaque (Grid Visual) -->
+    <!-- Seção de Tendências em Destaque -->
     <section class="trends-section container" id="tendencias">
         <div class="section-title-wrapper">
             <span class="sub-tag">Estilos do Momento</span>
@@ -78,21 +78,20 @@
         </div>
     </section>
 
-
-    <!-- MODAL DE DETALHES COMPLETO DO PRODUTO (ESTILO AMERICANAS) -->
+    <!-- MODAL DE DETALHES COMPLETO DO PRODUTO -->
     <div id="product-detail-modal" class="modal-overlay">
         <div class="modal-card product-detail-card" style="max-width: 750px; width: 90%;">
             <button class="modal-close-btn" onclick="closeProductDetailModal()"><i class="fa-solid fa-xmark"></i></button>
             
             <div class="product-detail-grid">
-                <!-- Galeria de Imagens -->
+                <!-- Galeria de Imagens com Setas Navegáveis -->
                 <div class="product-gallery">
                     <div class="main-image-container">
+                        <button type="button" class="modal-nav-btn prev" id="modal-img-prev"><i class="fa-solid fa-chevron-left"></i></button>
                         <img id="detail-main-img" src="" alt="Produto">
+                        <button type="button" class="modal-nav-btn next" id="modal-img-next"><i class="fa-solid fa-chevron-right"></i></button>
                     </div>
-                    <div class="thumbs-container" id="detail-thumbs-grid">
-                        <!-- Miniaturas injetadas via JS -->
-                    </div>
+                    <div class="thumbs-container" id="detail-thumbs-grid"></div>
                 </div>
 
                 <!-- Informações e Ações -->
@@ -133,16 +132,21 @@
             <form id="reservation-form">
                 <input type="hidden" id="res-product-name">
                 <input type="hidden" id="res-product-price">
+                <input type="hidden" id="res-product-image">
+                
                 <div class="form-grid">
                     <div class="input-group full">
                         <label>Selecione o Tamanho Desejado</label>
                         <select id="res-product-size" required style="width: 100%; padding: 10px; border-radius: 4px; border: 1px solid var(--border-color); background: var(--surface); color: var(--text-primary);">
-                            <!-- Preenchido dinamicamente -->
                         </select>
                     </div>
                     <div class="input-group full">
                         <label>Informe seu WhatsApp (com DDD)</label>
-                        <input type="text" id="res-client-whatsapp" required placeholder="Ex: 27999999999">
+                        <input type="text" id="res-client-whatsapp" required placeholder="Ex: 27999999999" maxlength="11">
+                    </div>
+                    <div class="input-group full">
+                        <label>Observações Adicionais (Opcional)</label>
+                        <textarea id="res-client-observations" placeholder="Ex: Prefiro embalagem para presente, combinar horário de retirada..." rows="3" style="width: 100%; padding: 10px; border-radius: 4px; border: 1px solid var(--border-color); background: var(--surface); color: var(--text-primary); font-family: inherit;"></textarea>
                     </div>
                 </div>
                 <button type="submit" class="btn-primary" id="btn-submit-reservation" style="margin-top: 15px;">Solicitar Reserva</button>
@@ -150,15 +154,13 @@
         </div>
     </div>
     
-    <!-- Container Principal de Produtos (Vitrine) -->
+    <!-- Vitrine -->
     <main class="container main-shop-section" id="vitrine">
-        
         <div class="section-title-wrapper" style="margin-top: 40px;">
             <span class="sub-tag">Vitrine Online</span>
             <h3>Nossos Lançamentos</h3>
         </div>
 
-        <!-- Filtros e Barra de Pesquisa Estilo Boutique -->
         <div class="store-filter-bar">
             <div class="search-box">
                 <i class="fa-solid fa-magnifying-glass"></i>
@@ -173,57 +175,19 @@
             </div>
         </div>
 
-        <!-- Vitrine Dinâmica (Alimentada pela API do Supabase) -->
-        <section class="products-grid" id="products-grid">
-            <!-- Os produtos são injetados via JavaScript com o botão de reserva integrado -->
-        </section>
+        <section class="products-grid" id="products-grid"></section>
     </main>
 
-    <!-- Seção Sobre a Marca (Quem Somos) -->
+    <!-- Sobre a Marca -->
     <section class="about-brand-section">
         <div class="container about-grid" id="sobre">
             <div class="about-text">
                 <span class="sub-tag">Nossa História</span>
                 <h3>Moda que traduz a sua melhor versão</h3>
-                <p>A <strong>Sophia's Moda Feminina</strong> nasceu com o propósito de empoderar mulheres através de peças que unem elegância, conforto e sofisticação. Cada coleção é cuidadosamente selecionada para acompanhar você em todos os momentos, do casual ao sofisticado.</p>
-                <p>Nosso atendimento humanizado via WhatsApp garante que você tenha uma consultoria de estilo exclusiva na palma da sua mão.</p>
+                <p>A <strong>Sophia's Moda Feminina</strong> nasceu com o propósito de empoderar mulheres através de peças que unem elegância, conforto e sofisticação.</p>
             </div>
             <div class="about-image">
                 <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=900&q=80" alt="Boutique Sophia's">
-            </div>
-        </div>
-    </section>
-
-    <!-- Seção de Benefícios (Garantias da Loja) -->
-    <section class="features-section">
-        <div class="container features-grid">
-            <div class="feature-item">
-                <i class="fa-solid fa-bag-shopping"></i>
-                <div>
-                    <h4>Peças Exclusivas</h4>
-                    <p>Curadoria rigorosa de tendências</p>
-                </div>
-            </div>
-            <div class="feature-item">
-                <i class="fa-brands fa-whatsapp"></i>
-                <div>
-                    <h4>Atendimento VIP</h4>
-                    <p>Suporte personalizado via WhatsApp</p>
-                </div>
-            </div>
-            <div class="feature-item">
-                <i class="fa-solid fa-box-open"></i>
-                <div>
-                    <h4>Envio Para Todo o Estado</h4>
-                    <p>Embalagem perfumada e segura</p>
-                </div>
-            </div>
-            <div class="feature-item">
-                <i class="fa-solid fa-shield-halved"></i>
-                <div>
-                    <h4>Compra Segura</h4>
-                    <p>Pagamento facilitado e confiável</p>
-                </div>
             </div>
         </div>
     </section>
@@ -233,7 +197,7 @@
         <i class="fa-brands fa-whatsapp"></i>
     </a>
 
-    <!-- Rodapé Completo -->
+    <!-- Rodapé -->
     <footer class="site-footer">
         <div class="container footer-content-grid">
             <div class="footer-col">
@@ -249,11 +213,6 @@
                     <li><a href="admin.html">Painel Administrativo</a></li>
                 </ul>
             </div>
-            <div class="footer-col">
-                <h4>Atendimento</h4>
-                <p><i class="fa-brands fa-whatsapp"></i> WhatsApp Exclusivo para Pedidos</p>
-                <p><i class="fa-regular fa-clock"></i> Seg à Sex: 09h às 18h</p>
-            </div>
         </div>
         <div class="footer-bottom">
             <div class="container">
@@ -262,7 +221,6 @@
         </div>
     </footer>
 
-    <!-- Supabase SDK & Script Principal -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="script.js"></script>
 </body>
